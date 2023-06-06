@@ -1,22 +1,21 @@
 package course.work.examquestions.controller;
 
-import course.work.examquestions.model.JavaQuestion;
 import course.work.examquestions.model.QuestionDTO;
 import course.work.examquestions.service.QuestionService;
 import lombok.AllArgsConstructor;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
-
 @Controller
-@RequestMapping("/java")
-public class JavaQuestionController {
+@RequestMapping("/math")
+public class MathQuestionController {
     QuestionService service;
 
-    public JavaQuestionController(QuestionService java) {
-        this.service = java;
+    public MathQuestionController(QuestionService math) {
+        this.service = math;
     }
 
     @PostMapping("/add")
@@ -31,11 +30,9 @@ public class JavaQuestionController {
     public ResponseEntity<Collection<QuestionDTO>> getQuestions() {
         return ResponseEntity.ok(service.getAll());
     }
-
     @DeleteMapping("/remove")
     public ResponseEntity removeQuestion(@RequestBody QuestionDTO question) {
         service.remove(question);
         return ResponseEntity.ok("Вопрос удален");
     }
-
 }

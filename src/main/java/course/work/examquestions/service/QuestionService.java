@@ -1,13 +1,16 @@
 package course.work.examquestions.service;
 
-import course.work.examquestions.model.Question;
+import course.work.examquestions.model.JavaQuestion;
+import course.work.examquestions.model.QuestionDTO;
+import org.aspectj.weaver.patterns.TypePatternQuestions;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 @Service
 public interface QuestionService {
-    Question add(String question, String answer);
-    Question remove(Question question);
-    Collection<Question> getAll();
-    Question getRandomQuestion();
+    QuestionDTO add(QuestionDTO question);
+    void remove(QuestionDTO javaQuestion);
+    Collection<QuestionDTO> getAll();
+    QuestionDTO getRandomQuestion();
+    Long getSize();
 }

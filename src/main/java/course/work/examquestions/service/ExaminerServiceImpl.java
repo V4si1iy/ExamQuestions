@@ -1,26 +1,59 @@
 package course.work.examquestions.service;
 
-import course.work.examquestions.model.Question;
+import course.work.examquestions.exception.OverRequest;
+import course.work.examquestions.model.QuestionDTO;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
-@RequiredArgsConstructor
-public class ExaminerServiceImpl implements ExaminerService{
-    QuestionService questionRepository;
-    Set<Question> questions = new HashSet<>();
-    @Override
-    public Collection<Question> getQuestions(int amount) {
 
-        while (questions.size() < amount)
-        {
-           questions.add(questionRepository.getRandomQuestion());
+public class ExaminerServiceImpl implements ExaminerService {
+    QuestionService serviceJava;
+
+    QuestionService serviceMath;
+
+    public ExaminerServiceImpl(QuestionService java, QuestionService math) {
+        this.serviceJava = java;
+        this.serviceMath = math;
+    }
+
+    Set<QuestionDTO> questionsJava = new HashSet<>();
+    Set<QuestionDTO> questionsMath = new HashSet<>();
+
+    @Override
+    public Collection<QuestionDTO> getQuestions(int amount) throws OverRequest {
+        Random rnd = new Random();
+        long random;
+        random = rnd.nextLong(amount + 1);
+        if (serviceJava.getSize() + serviceMath.getSize() < amount) {
+            throw new OverRequest();
         }
-        return questions;
+        if (random > serviceJava.getSize() || amount - random > serviceMath.getSize()) {
+            if (serviceMath.getSize() > serviceJava.getSize()) {
+                random = serviceJava.getSize();
+            } else {
+                random = amount - serviceMath.getSize();
+            }
+        }
+        while (questionsMath.size() < amount - random) {
+            questionsMath.add(serviceMath.getRandomQuestion());
+        }
+        while (questionsJava.size() < random) {
+            questionsJava.add(serviceJava.getRandomQuestion());
+        }
+        return Stream.of(questionsMath, questionsJava)
+                .parallel()
+                .flatMap(x -> x.stream())
+                .collect(Collectors.toSet());
     }
 }
