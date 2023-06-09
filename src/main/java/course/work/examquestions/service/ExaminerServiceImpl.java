@@ -18,8 +18,10 @@ import java.util.stream.Stream;
 @Service
 
 public class ExaminerServiceImpl implements ExaminerService {
+    Random rnd = new Random();
+    @Qualifier("java")
     QuestionService serviceJava;
-
+    @Qualifier("math")
     QuestionService serviceMath;
 
     public ExaminerServiceImpl(QuestionService java, QuestionService math) {
@@ -27,12 +29,11 @@ public class ExaminerServiceImpl implements ExaminerService {
         this.serviceMath = math;
     }
 
-    Set<QuestionDTO> questionsJava = new HashSet<>();
-    Set<QuestionDTO> questionsMath = new HashSet<>();
 
     @Override
     public Collection<QuestionDTO> getQuestions(int amount) throws OverRequest {
-        Random rnd = new Random();
+        Set<QuestionDTO> questionsJava = new HashSet<>();
+        Set<QuestionDTO> questionsMath = new HashSet<>();
         long random;
         random = rnd.nextLong(amount + 1);
         if (serviceJava.getSize() + serviceMath.getSize() < amount) {

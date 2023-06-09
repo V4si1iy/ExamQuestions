@@ -18,8 +18,8 @@ public class MathQuestionController {
         this.service = math;
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<QuestionDTO> addQuestions(@RequestBody QuestionDTO question) {
+    @GetMapping("/add")
+    public ResponseEntity<QuestionDTO> addQuestions(@RequestParam QuestionDTO question) {
         if (question == null) {
             return ResponseEntity.notFound().build();
         }
@@ -30,8 +30,8 @@ public class MathQuestionController {
     public ResponseEntity<Collection<QuestionDTO>> getQuestions() {
         return ResponseEntity.ok(service.getAll());
     }
-    @DeleteMapping("/remove")
-    public ResponseEntity removeQuestion(@RequestBody QuestionDTO question) {
+    @GetMapping("/remove")
+    public ResponseEntity removeQuestion(@RequestParam QuestionDTO question) {
         service.remove(question);
         return ResponseEntity.ok("Вопрос удален");
     }

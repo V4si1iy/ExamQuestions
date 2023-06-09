@@ -13,10 +13,15 @@ import java.util.List;
 import java.util.Random;
 
 @Service
-@AllArgsConstructor
 @Component("java")
 public class JavaQuestionService implements QuestionService {
     JavaQuestionRepository repository;
+
+    public JavaQuestionService(JavaQuestionRepository repository) {
+        this.repository = repository;
+    }
+
+    Random rnd = new Random();
 
     @Override
     public QuestionDTO add(QuestionDTO question) {
@@ -43,7 +48,7 @@ public class JavaQuestionService implements QuestionService {
 
     @Override
     public QuestionDTO getRandomQuestion() {
-        Random rnd = new Random();
+
         return toDTO(repository.findById(rnd.nextLong(repository.findAll().size())).get());
     }
 

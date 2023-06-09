@@ -20,8 +20,9 @@ public class ExamController {
     ExaminerService service;
     @GetMapping("/{amountQuestions}")
     public ResponseEntity<Collection<QuestionDTO>> getQuestions(@PathVariable int amountQuestions) throws OverRequest {
-        if(amountQuestions <= 0)
+        if(amountQuestions <= 0) {
             return ResponseEntity.noContent().build();
+        }
         return ResponseEntity.ok(service.getQuestions(amountQuestions));
     }
 }
