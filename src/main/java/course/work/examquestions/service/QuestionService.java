@@ -9,7 +9,7 @@ import java.util.Collection;
 @Service
 public interface QuestionService {
     QuestionDTO add(QuestionDTO question);
-    void remove(QuestionDTO javaQuestion);
+    void remove(QuestionDTO question);
     Collection<QuestionDTO> getAll();
     QuestionDTO getRandomQuestion();
     Long getSize();

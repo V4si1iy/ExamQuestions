@@ -33,7 +33,7 @@ public class JavaQuestionController {
     }
 
     @GetMapping("/remove")
-    public ResponseEntity removeQuestion(@RequestParam QuestionDTO question) {
+    public ResponseEntity removeQuestion(@RequestBody QuestionDTO question) {
         service.remove(question);
         return ResponseEntity.ok("Вопрос удален");
     }

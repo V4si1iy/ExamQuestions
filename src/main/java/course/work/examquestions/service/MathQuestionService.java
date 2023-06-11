@@ -12,12 +12,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
+
 @Service
 
 @Component("math")
 public class MathQuestionService implements QuestionService {
     MathQuestionRepository repository;
-    Random rnd = new Random();
+    private Random rnd = new Random();
 
     public MathQuestionService(MathQuestionRepository repository) {
         this.repository = repository;

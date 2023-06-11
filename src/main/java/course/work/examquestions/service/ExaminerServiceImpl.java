@@ -18,7 +18,7 @@ import java.util.stream.Stream;
 @Service
 
 public class ExaminerServiceImpl implements ExaminerService {
-    Random rnd = new Random();
+    private Random rnd = new Random();
     @Qualifier("java")
     QuestionService serviceJava;
     @Qualifier("math")
@@ -32,8 +32,7 @@ public class ExaminerServiceImpl implements ExaminerService {
 
     @Override
     public Collection<QuestionDTO> getQuestions(int amount) throws OverRequest {
-        Set<QuestionDTO> questionsJava = new HashSet<>();
-        Set<QuestionDTO> questionsMath = new HashSet<>();
+        Set<QuestionDTO> questions = new HashSet<>();
         long random;
         random = rnd.nextLong(amount + 1);
         if (serviceJava.getSize() + serviceMath.getSize() < amount) {
@@ -46,15 +45,13 @@ public class ExaminerServiceImpl implements ExaminerService {
                 random = amount - serviceMath.getSize();
             }
         }
-        while (questionsMath.size() < amount - random) {
-            questionsMath.add(serviceMath.getRandomQuestion());
+        while (questions.size() < amount - random) {
+            questions.add(serviceMath.getRandomQuestion());
         }
-        while (questionsJava.size() < random) {
-            questionsJava.add(serviceJava.getRandomQuestion());
+        int size = questions.size();
+        while (questions.size() < random + size) {
+            questions.add(serviceJava.getRandomQuestion());
         }
-        return Stream.of(questionsMath, questionsJava)
-                .parallel()
-                .flatMap(x -> x.stream())
-                .collect(Collectors.toSet());
+        return questions;
     }
 }

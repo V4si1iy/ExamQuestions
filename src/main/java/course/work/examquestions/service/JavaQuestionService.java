@@ -21,7 +21,7 @@ public class JavaQuestionService implements QuestionService {
         this.repository = repository;
     }
 
-    Random rnd = new Random();
+   private Random rnd = new Random();
 
     @Override
     public QuestionDTO add(QuestionDTO question) {
@@ -31,7 +31,6 @@ public class JavaQuestionService implements QuestionService {
 
     @Override
     public void remove(QuestionDTO question) {
-
         repository.delete(fromDTO(question));
     }
 
